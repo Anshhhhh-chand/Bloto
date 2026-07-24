@@ -1,11 +1,11 @@
-# Blogify - Autonomous AI Content Platform
+# Bloto - Autonomous AI Content Platform
 
-**Blogify** is a modern, AI-powered blogging platform built on Node.js and Express. It has evolved from a standard blog into a fully autonomous, multi-agent AI content pipeline featuring Human-in-the-loop approvals, background processing, and a Vector Search RAG Chatbot.
+**Bloto** is a modern, AI-powered blogging platform built on Node.js and Express. It has evolved from a standard blog into a fully autonomous, multi-agent AI content pipeline featuring Human-in-the-loop approvals, background processing, and a Vector Search RAG Chatbot.
 
 ## 🚀 Features
 
 ### 1. Multi-Agent Content Pipeline
-Blogify orchestrates a team of specialized AI agents working in the background:
+Bloto orchestrates a team of specialized AI agents working in the background:
 - **Planner:** Outlines the blog structure and identifies target keywords.
 - **Researcher:** Fetches real-world data and context using web search capabilities.
 - **Writer:** Compiles the plan and research into a structured Markdown draft.
@@ -64,8 +64,8 @@ Blogify orchestrates a team of specialized AI agents working in the background:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/blogify.git
-   cd blogify
+   git clone https://github.com/yourusername/bloto.git
+   cd bloto
    ```
 
 2. Install dependencies:
@@ -113,7 +113,7 @@ To enable the RAG Chatbot's ultra-fast semantic search, you must create a Vector
 1. Go to your MongoDB Atlas dashboard.
 2. Select your cluster and go to the **Atlas Search** tab.
 3. Click **Create Search Index** and choose **Atlas Vector Search** (JSON Editor).
-4. Select the `blogify` database and the `embeddingchunks` collection.
+4. Select the `bloto` database and the `embeddingchunks` collection.
 5. Paste the following configuration:
 ```json
 {
@@ -128,5 +128,5 @@ To enable the RAG Chatbot's ultra-fast semantic search, you must create a Vector
 }
 ```
 6. Name the index `embedding_index` and create it. 
-7. *Note: If the index is missing or building, Blogify will automatically fallback to in-memory JS Cosine Similarity so your site never breaks.*
+7. *Note: If the index is missing or building, Bloto will automatically fallback to in-memory JS Cosine Similarity so your site never breaks.*
 

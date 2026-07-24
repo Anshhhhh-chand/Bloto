@@ -7,10 +7,7 @@
       <span id="draftLoader" class="spinner-border spinner-border-sm" role="status" style="display: none;"></span>
     </button>
 
-        <button type="button" onclick="optimizeSEO()" class="btn btn-success btn-sm" style="display: flex; align-items: center; gap: 5px;">
-      🔍 SEO Optimize
-      <span id="seoLoader" class="spinner-border spinner-border-sm" role="status" style="display: none;"></span>
-    </button>
+
 
         <button type="button" onclick="testTwitterConnection()" class="btn btn-info btn-sm" style="display: flex; align-items: center; gap: 5px;">
       🐦 Test Twitter
@@ -90,81 +87,7 @@ function generateDraft() {
   });
 }
 
-// SEO Optimize Function
-function optimizeSEO() {
-  var titleField = document.getElementById('title');
-  var bodyField = document.getElementById('body');
-  var seoLoader = document.getElementById('seoLoader');
 
-    if (!titleField || !bodyField) {
-    showStatus('❌ Form fields not found', 'danger');
-    return;
-  }
-
-    var content = bodyField.value.trim();
-  var title = titleField.value.trim();
-
-    if (!content || content.length < 50) {
-    showStatus('❌ Please write some content first (at least 50 characters)', 'warning');
-    bodyField.focus();
-    return;
-  }
-
-    // Show loading
-  if (seoLoader) seoLoader.style.display = 'inline-block';
-  showStatus('🔍 Optimizing SEO... This may take 20-30 seconds', 'info');
-
-  fetch('/ai/seo', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title: title, markdown: content })
-  })
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    if (data.success && data.seo) {
-      var meta = data.seo;
-
-            // Update title if available and different
-      if (meta.title && meta.title !== title) {
-        var updateTitle = confirm('Update title to: "' + meta.title + '"?');
-        if (updateTitle) {
-          titleField.value = meta.title;
-        }
-      }
-
-            // Show SEO suggestions
-      var seoInfo = '✅ SEO Analysis Complete!\n';
-      if (meta.title) seoInfo += '📝 Suggested Title: ' + meta.title + '\n';
-      if (meta.slug) seoInfo += '🔗 URL Slug: ' + meta.slug + '\n';
-      if (meta.description) seoInfo += '📄 Meta Description: ' + meta.description + '\n';
-      if (data.keywords && data.keywords.length > 0) {
-        seoInfo += '🏷️ Keywords: ' + data.keywords.join(', ');
-      }
-
-            alert(seoInfo);
-      showStatus('✅ SEO optimization complete!', 'success');
-    } else {
-      var errorMessage = 'Unknown error occurred';
-      if (data.error) {
-        errorMessage = data.error;
-      } else if (data.errors && Array.isArray(data.errors)) {
-        errorMessage = data.errors.map(function(err) { return err.msg || err.message || err; }).join(', ');
-      }
-      showStatus('❌ Error: ' + errorMessage, 'danger');
-    }
-  })
-  .catch(function(error) {
-    console.error('Error optimizing SEO:', error);
-    showStatus('❌ Network error. Please try again.', 'danger');
-  })
-  .finally(function() {
-    if (seoLoader) seoLoader.style.display = 'none';
-  });
-}
 
 // Test Twitter Connection Function
 function testTwitterConnection() {

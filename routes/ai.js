@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const { runDraftWorkflow, runSeoWorkflow } = require('../services/agent');
-const { generateText, DRAFT_PROMPT } = require('../services/llm');
+const { runDraftWorkflow } = require('../services/agent');
+const { generateText } = require('../services/llm');
 
 const router = express.Router();
 
@@ -62,125 +62,7 @@ router.post('/draft', async (req, res) => {
   }
 });
 
-router.post('/seo', async (req, res) => {
-  const title = req.body.title || req.body.topic || req.body.subject;
-  const markdown = req.body.markdown || req.body.body || req.body.content;
-  console.log('[AI SEO] Incoming body:', req.body);
-  if (!title || typeof title !== 'string' || title.trim().length < 3) {
-    return res.status(400).json({
-      success: false,
-      error: 'Title/topic is required and must be at least 3 characters.'
-    });
-  }
-  if (!markdown || typeof markdown !== 'string' || markdown.trim().length < 10) {
-    return res.status(400).json({
-      success: false,
-      error: 'Body/markdown/content is required and must be at least 10 characters.'
-    });
-  }
-  try {
-    console.log('Generating SEO metadata for content');
-    const result = await runSeoWorkflow(title, markdown);
-    if (result.error) {
-      console.error('SEO workflow error:', result.error);
-      return res.status(500).json({
-        success: false,
-        error: result.error || 'SEO generation failed'
-      });
-    }
-    res.json({
-      success: true,
-      seo: result.meta || {},
-      keywords: result.keywords || []
-    });
-  } catch (error) {
-    console.error('Error generating SEO:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to generate SEO. Please try again.'
-    });
-  }
-});
 
-
-
-router.post('/calendar', validateUserId, handleValidationErrors, async (req, res) => {
-  try {
-    const { userId } = req.body;
-
-        console.log(`Generating content calendar for user: ${userId}`);
-
-    const Blog = require('../models/blog');
-
-    const recentPosts = await Blog.find({ createdBy: userId })
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select('title body');
-
-        let userNiche = 'general blogging';
-    if (recentPosts.length > 0) {
-      const topics = recentPosts.map(post => post.title).join(', ');
-      userNiche = topics;
-    }
-
-    const calendarPrompt = `Based on these recent blog posts: ${userNiche}
-    
-    Generate 5 future blog post ideas with predicted traffic potential.
-    
-    Format as JSON array:
-    [
-      {
-        "title": "Blog post title",
-        "description": "Brief description",
-        "predictedTraffic": "High/Medium/Low",
-        "estimatedReadTime": "5 min",
-        "suggestedDate": "2024-01-15"
-      }
-    ]
-    
-    Make sure topics are relevant to the user's existing content and trending in their niche.`;
-
-        const calendarResponse = await generateText(calendarPrompt);
-
-        let calendar;
-    try {
-      calendar = JSON.parse(calendarResponse);
-    } catch (parseError) {
-      calendar = [
-        {
-          title: "10 Tips for Better Content Creation",
-          description: "Practical advice for creating engaging content",
-          predictedTraffic: "High",
-          estimatedReadTime: "7 min",
-          suggestedDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-        },
-        {
-          title: "The Future of Digital Marketing",
-          description: "Trends and predictions for the coming year",
-          predictedTraffic: "Medium",
-          estimatedReadTime: "5 min",
-          suggestedDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-        }
-      ];
-    }
-
-        res.json({
-      success: true,
-      data: {
-        calendar,
-        basedOnPosts: recentPosts.length,
-        userNiche: recentPosts.length > 0 ? 'Personalized' : 'General'
-      }
-    });
-
-      } catch (error) {
-    console.error('Error generating calendar:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to generate content calendar. Please try again.'
-    });
-  }
-});
 
 router.get('/test-groq', async (req, res) => {
   try {

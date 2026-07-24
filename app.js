@@ -45,10 +45,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.get("/calendar", (req, res) => {
-  if (!req.user) return res.redirect("/user/signin");
-  res.render("calendar", { user: req.user });
-});
+
 
 app.use("/user", UserRoute);
 app.use("/blog", BlogRoute);

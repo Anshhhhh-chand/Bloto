@@ -64,7 +64,7 @@ async function runCritic(agentRunId, draft, plan, sources) {
         { role: 'system', content: CRITIC_SYSTEM },
         { role: 'user', content: userPrompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
 
     const jsonMatch = raw.match(/```(?:json)?\n?([\s\S]*?)\n?```/) || [null, raw];

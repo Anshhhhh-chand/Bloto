@@ -129,4 +129,3 @@ To enable the RAG Chatbot's ultra-fast semantic search, you must create a Vector
 ```
 6. Name the index `embedding_index` and create it. 
 7. *Note: If the index is missing or building, Bloto will automatically fallback to in-memory JS Cosine Similarity so your site never breaks.*
-

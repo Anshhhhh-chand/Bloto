@@ -48,7 +48,7 @@ Format your response as a brief report with actionable bullet points.`;
         { role: 'system', content: 'You are a meta-critic improving an AI system based on historical data.' },
         { role: 'user', content: metaPrompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
 
     console.log('[analyticsAgent] Meta-critic analysis completed');
@@ -114,7 +114,7 @@ Keep recommendations specific and actionable. Format as JSON:
         { role: 'system', content: 'You are a content strategy analyst. Respond with valid JSON only.' },
         { role: 'user', content: analysisPrompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
 
     let analysis;

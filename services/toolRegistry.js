@@ -23,7 +23,7 @@ Important: Return only valid JSON. If you cannot find specific sources, make the
         { role: 'system', content: 'You are a research assistant. Always respond with valid JSON.' },
         { role: 'user', content: prompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
 
     let parsed;

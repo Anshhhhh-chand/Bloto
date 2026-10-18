@@ -51,7 +51,7 @@ Write the complete blog post now. Use markdown formatting with proper headings, 
         { role: 'system', content: WRITER_SYSTEM },
         { role: 'user', content: userPrompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
   } catch (err) {
     success = false;

@@ -23,7 +23,7 @@ function formatPrompt(template, variables) {
   );
 }
 
-async function generateText(prompt, variables = {}, model = 'groq/compound') {
+async function generateText(prompt, variables = {}, model = 'gemini-3.8-flash') {
   try {
     const formattedPrompt = formatPrompt(prompt, variables);
 
@@ -40,7 +40,7 @@ async function generateText(prompt, variables = {}, model = 'groq/compound') {
   }
 }
 
-async function* streamText(prompt, variables = {}, model = 'groq/compound') {
+async function* streamText(prompt, variables = {}, model = 'gemini-3.8-flash') {
   try {
     const formattedPrompt = formatPrompt(prompt, variables);
     const messages = [

@@ -1,13 +1,13 @@
 
-const { pipeline } = require('@xenova/transformers');
-
-const EMBEDDING_DIMENSIONS = 384; 
+const EMBEDDING_DIMENSIONS = 384;
 let extractorPromise = null;
 
 function getExtractor() {
   if (!extractorPromise) {
     console.log('[embeddings] Loading local AI model (may take a few seconds on first run)...');
-    extractorPromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+    extractorPromise = import('@xenova/transformers').then(({ pipeline }) =>
+      pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2')
+    );
   }
   return extractorPromise;
 }

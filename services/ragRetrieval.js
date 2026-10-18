@@ -118,7 +118,7 @@ Provide a clear, helpful answer with citations.`;
         { role: 'system', content: RAG_SYSTEM },
         { role: 'user', content: userPrompt },
       ],
-      process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      process.env.GEMINI_MODEL || 'gemini-3.8-flash'
     );
   } catch (err) {
     console.error('[ragRetrieval] LLM generation failed:', err.message);
